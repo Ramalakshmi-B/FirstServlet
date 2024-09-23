@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">  <display-name>FirstServlet</display-name>
+ <welcome-file-list>
+ 	<welcome-file>home.html</welcome-file>
+ </welcome-file-list>
+<servlet>
+<!-- Date Servlet -->
+<servlet-name>dateServlet</servlet-name>
+<servlet-class>com.nt.DateServelt</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>dateServlet</servlet-name>
+<url-pattern>/date</url-pattern>
+</servlet-mapping>
+
+<!-- Register.html -->
+  <servlet>
+ 	<servlet-name>module1</servlet-name>
+ 	<servlet-class>com.nt.RegisterServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	<servlet-name>module1</servlet-name>
+ 	<url-pattern>/register</url-pattern>
+ </servlet-mapping>
+ <!-- Select.html -->
+  <servlet>
+ 	<servlet-name>module2</servlet-name>
+ 	<servlet-class>com.nt.SelectServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	<servlet-name>module2</servlet-name>
+ 	<url-pattern>/select</url-pattern>
+ </servlet-mapping>
+ 
+ <!-- Update.html -->
+   <servlet>
+ 	<servlet-name>module3</servlet-name>
+ 	<servlet-class>com.nt.UpdateServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	<servlet-name>module3</servlet-name>
+ 	<url-pattern>/update</url-pattern>
+ </servlet-mapping>
+ 
+</web-app>
+
