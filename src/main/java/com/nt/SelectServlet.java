@@ -7,11 +7,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.nt.dao.StudentDao;
 import com.nt.entity.Student;
 
 public class SelectServlet extends HttpServlet{
@@ -20,36 +22,23 @@ public class SelectServlet extends HttpServlet{
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//super.service(req, resp);
-		
+
 		int id = Integer.parseInt(req.getParameter("t1"));
-		try {
-			Class.forName( "com.mysql.jdbc.Driver" );
-
-			Connection con = DriverManager
-					.getConnection( "jdbc:mysql://localhost:3306/Student", "root", "root_1234" );
-			PreparedStatement ps = con.prepareStatement( "select * from StudentInfo where StdId=?" );
-			ps.setInt(1, id);
-			ResultSet rs = ps.executeQuery();
-			res.setContentType( "text/html" );
-			PrintWriter pw = res.getWriter();
-			if (rs.next())
-				
-			{
-				int i = rs.getInt( "id" );
-				String name = rs.getString( "name" );
-				Student s = new Student( id, name);
-				req.setAttribute( "std", s);
-				pw.write("Student Information is  Id" + i + "name " + name);
-			}
-			else
-			{
-				pw.write("No record found !!");
-			}
-	}
-	
-	catch( Exception e ) {
-		e.printStackTrace();
-	}
-
+		StudentDao S  = new StudentDao();
+		Student std = S.getById(id);
+		res.setContentType("text/html");
+		PrintWriter pw = res.getWriter();
+		if(std==null)
+		{
+					req.setAttribute("msg", "No record found");
+					RequestDispatcher rd = req.getRequestDispatcher("success.jsp");
+					rd.forward(req, res);
+		}
+		else
+		{
+			RequestDispatcher rd = req.getRequestDispatcher("display.jsp");
+			rd.forward(req,res);
+		}
+		
 }
 }

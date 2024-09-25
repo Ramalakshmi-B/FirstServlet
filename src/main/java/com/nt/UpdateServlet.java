@@ -6,10 +6,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.nt.dao.StudentDao;
+import com.nt.entity.Student;
 
 public class UpdateServlet extends HttpServlet {
 	@Override
@@ -18,22 +22,20 @@ public class UpdateServlet extends HttpServlet {
 		int id = Integer.parseInt( req.getParameter( "id" ) );
 		String name = req.getParameter( "name");
 
-		try {
-			Class.forName( "com.mysql.jdbc.Driver" );
-
-			Connection con = DriverManager
-					.getConnection( "jdbc:mysql://localhost:3306/Student", "root", "root_1234" );
-
-			PreparedStatement ps = con.prepareStatement( "update StudentInfo set StdName=? where StdId=?" );
-			ps.setString( 1, name);
-			ps.setInt( 2, id );
-			ps.executeUpdate();
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
+		StudentDao d = new StudentDao();
+		boolean isUpdated = d.updateInfo(id,name);
 		res.setContentType( "text/html" );
 		PrintWriter pw = res.getWriter();
-		pw.write( "<h3 style=color:'green'>Name updated successfully</h3>" );
+		if(isUpdated) {
+				req.setAttribute("msg", "Name Updated successfull");
+				RequestDispatcher rd = req.getRequestDispatcher("success.jsp");
+				rd.forward(req, res);
+				}
+				else
+					req.setAttribute("errorMsg", "Name Updation failed");
+				RequestDispatcher rd = req.getRequestDispatcher("error.jsp");
+				rd.forward(req, res);
+
 		pw.close();
 
 	}

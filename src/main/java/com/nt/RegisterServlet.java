@@ -6,10 +6,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.nt.dao.StudentDao;
+import com.nt.entity.Student;
 
 public class RegisterServlet extends HttpServlet{
 
@@ -19,26 +23,27 @@ public class RegisterServlet extends HttpServlet{
 		//super.service(req, res);
 		int id = Integer.parseInt(req.getParameter("t1"));
 		String name = req.getParameter("t2");
-		
+
 		//Db connection
-		try {
-			Class.forName( "com.mysql.jdbc.Driver" );
-			Connection con = DriverManager
-					.getConnection( "jdbc:mysql://localhost:3306/Student", "root", "root_1234" );
-			PreparedStatement ps = con.prepareStatement( "insert into StudentInfo values(?,?)" );
-			ps.setInt( 1, id );
-			ps.setString( 2, name );
-			ps.executeUpdate();
-		}
-		catch( Exception e ) {
-			e.printStackTrace();
-		}
+		Student S  = new Student (id, name);
+		StudentDao d = new StudentDao();
+		boolean isAdded = d.register(S);
 		res.setContentType( "text/html" );
 		PrintWriter pw = res.getWriter();
-		pw.write( "<h3 style=color:'green'>Registration successfull</h3>" );
+
+		if(isAdded) {
+		req.setAttribute("msg", "Registration successfull");
+		RequestDispatcher rd = req.getRequestDispatcher("success.jsp");
+		rd.forward(req, res);
+		}
+		else
+			req.setAttribute("errorMsg", "Registration failed");
+		RequestDispatcher rd = req.getRequestDispatcher("error.jsp");
+		rd.forward(req, res);
+
 		pw.close();
 	}
-	
-	
+
+
 
 }

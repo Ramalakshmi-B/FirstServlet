@@ -19,7 +19,7 @@ public class DateServelt extends HttpServlet {
 	  PrintWriter pw = resp.getWriter();
 	  pw.write("Current date and time "+ d);
 	  pw.close();
-							
+
 	}
 
 }
